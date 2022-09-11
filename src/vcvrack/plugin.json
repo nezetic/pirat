@@ -1,0 +1,23 @@
+{
+  "slug": "PRat",
+  "name": "PRat",
+  "version": "2.0.0",
+  "license": "BSD-2-Clause",
+  "brand": "Mad Chodpa",
+  "author": "Sheo",
+  "authorEmail": "",
+  "authorUrl": "",
+  "pluginUrl": "",
+  "manualUrl": "",
+  "sourceUrl": "",
+  "donateUrl": "",
+  "changelogUrl": "",
+  "modules": [
+    {
+      "slug": "PRat",
+      "name": "PRat",
+      "description": "PRat Distortion",
+      "tags": []
+    }
+  ]
+}
