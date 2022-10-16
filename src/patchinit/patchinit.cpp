@@ -68,6 +68,9 @@ PRatDist dist;
 // PRat noise gate
 NoiseGate ng;
 
+// UX values
+float satVal = 0.f;
+
 
 void AudioCallback(AudioHandle::InputBuffer  in,
                    AudioHandle::OutputBuffer out,
@@ -212,8 +215,7 @@ void AudioCallback(AudioHandle::InputBuffer  in,
     dsy_gpio_write(&hw.gate_out_2, env > ef_threshold.Get());
 
     // output the distortion saturation
-    const float sat = fclamp(dist.GetSaturation(), 0.f, 5.f);
-    hw.WriteCvOut(CV_OUT_2, sat);
+    satVal = fclamp(dist.GetSaturation(), 0.f, 5.f);
 
     // generate a gate from the input gate (but with a minimum duration)
     gate.Update(hw.gate_in_2.State(), System::GetNow());
@@ -262,9 +264,14 @@ int main(void)
             } else {
                 initialized = true;
             }
-        } else if (dosave) {
-            storage.Save();
-            dosave = false;
+        } else {
+            // update led
+            hw.WriteCvOut(CV_OUT_2, satVal);
+            // save settings
+            if (dosave) {
+                storage.Save();
+                dosave = false;
+            }
         }
     }
 }
