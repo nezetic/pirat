@@ -35,7 +35,7 @@ Blend -> Blend (K0)
 Level -> Speed (K1)
 Filter -> Tone (K2)
 Gain -> Regen (K4)
-Volume -> Dense (K6)
+Gain In -> Dense (K6)
 
 Gain Mod -> Size (K5)
 Filter Mod -> Index (K3)

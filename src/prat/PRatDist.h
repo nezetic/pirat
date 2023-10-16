@@ -32,16 +32,16 @@ class PRatDist
     PRatDist(): Clipper(Splines::D1N914TF), Clipper2(Splines::LEDTF) {}
     ~PRatDist() {}
 
-    static constexpr int P_GAIN   = 0;
-    static constexpr int P_FILTER = 1;
-    static constexpr int P_LEVEL  = 2;
-    static constexpr int P_DRYWET = 3;
-    static constexpr int P_VOL    = 4;
-    static constexpr int P_BYPASS = 5;
-    static constexpr int P_HARD   = 6;
-    static constexpr int P_SILED  = 7;
-    static constexpr int P_TIGHT  = 8;
-    static constexpr int P_RUETZ  = 9;
+    static constexpr int P_GAIN    = 0;
+    static constexpr int P_FILTER  = 1;
+    static constexpr int P_LEVEL   = 2;
+    static constexpr int P_DRYWET  = 3;
+    static constexpr int P_GAIN_IN = 4;
+    static constexpr int P_BYPASS  = 5;
+    static constexpr int P_HARD    = 6;
+    static constexpr int P_SILED   = 7;
+    static constexpr int P_TIGHT   = 8;
+    static constexpr int P_RUETZ   = 9;
 
     /** Initializes the PRat module.
      *  \param sample_rate - the sample rate of the audio engine being run.
@@ -85,9 +85,9 @@ class PRatDist
         switch(param) {
             case P_GAIN: p_gain_ = value; break;
             case P_FILTER: p_filter_ = value; break;
-            case P_LEVEL: p_level_ = value; break;
+            case P_GAIN_IN: p_gain_in_ = value; break;
             case P_DRYWET: p_drywet_ = value; break;
-            case P_VOL: p_vol_ = value; break;
+            case P_LEVEL: p_level_ = value; break;
             case P_BYPASS: p_bypass_ = value; break;
             case P_HARD: p_hard_ = value; break;
             case P_SILED: p_siled_ = value; break;
@@ -106,10 +106,10 @@ class PRatDist
   private:
     float p_gain_ = 0.f;
     float p_filter_ = 0.f;
-    float p_level_ = 1.f;
+    float p_gain_in_ = 1.f;
     float p_drywet_ = 1.f;
     float p_siled_ = 1.f;
-    float p_vol_ = 1.f;
+    float p_level_ = 1.f;
     float p_bypass_ = 0.f;
     float p_hard_ = 0.f;
     float p_tight_ = 0.f;

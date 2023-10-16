@@ -72,7 +72,7 @@ void PRatDist::Process(
         return;
     }
 
-    const float gainIn = Utils::ExpResponse(p_level_);
+    const float gainIn = Utils::ExpResponse(p_gain_in_);
     Utils::Gain(inputL, inputR, gainIn, outputL, outputR, len);
 
     Hipass1.Process(outputL, outputR, outputL, outputR, len);
@@ -120,11 +120,12 @@ void PRatDist::Process(
     Filter.Process(outputL, outputR, outputL, outputR, len);
     Hipass3.Process(outputL, outputR, outputL, outputR, len);
 
+    const float gainOut = Utils::ExpResponse(p_level_);
+    Utils::Gain(outputL, outputR, gainOut, outputL, outputR, len);
+
 #if HAS_FADER_SUPPORT
     MixerDryWet.Process(inputL, inputR, outputL, outputR, outputL, outputR, len);
 #endif
-    const float gainOut = Utils::ExpResponse(p_vol_);
-    Utils::Gain(outputL, outputR, gainOut, outputL, outputR, len);
 
     if (p_bypass_ > 0.5f) {
         Utils::Copy(inputL, inputR, outputL, outputR, len);

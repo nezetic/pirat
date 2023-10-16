@@ -241,6 +241,9 @@ int main(void)
     dist.Init(hw.AudioSampleRate());
     ng.Init(hw.AudioSampleRate());
 
+    // as eurorack audio signals are quite hot, reduce levels a bit before gain stage
+    dist.SetParam(PRatDist::P_GAIN_IN, 0.50f);
+
     ng.SetParam(NoiseGate::P_DETECTOR_GAIN, 0.5);  // * 1
     ng.SetParam(NoiseGate::P_REDUCTION, 0.4);      // -40db
     ng.SetParam(NoiseGate::P_SLOPE, 0.3, true);    // 3

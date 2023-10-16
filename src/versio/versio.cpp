@@ -21,10 +21,29 @@ using namespace daisysp;
 using namespace prat;
 
 
+struct Settings
+{
+    Settings():
+        ng_threshold(0.4f),  // -45db
+        ng_release(0.5f) {}    // 100ms
+
+    float ng_threshold;
+    float ng_release;
+
+    bool operator==(const Settings &rhs) {
+        return Utils::NearlyEqual(ng_threshold, rhs.ng_threshold)
+            && Utils::NearlyEqual(ng_release, rhs.ng_release);
+    }
+    bool operator!=(const Settings &rhs) { return !operator==(rhs); }
+};
+
 // Hardware object for the versio
 DaisyVersio hw;
 
 // Settings
+PersistentStorage<Settings> storage(hw.seed.qspi);
+Settings default_settings;
+bool dosave = false;
 bool initialized = false;
 
 // PRat distortion
@@ -42,6 +61,7 @@ void AudioCallback(AudioHandle::InputBuffer  in,
                    size_t                    size)
 {
     static bool first = true;
+    static bool prevshift = false;
 
     static GrabValue<float> cv_mix = 0.f;
     static GrabValue<float> cv_level = 0.f;
@@ -49,7 +69,7 @@ void AudioCallback(AudioHandle::InputBuffer  in,
     static GrabValue<float> ng_threshold = 0.4f;  // -45db
     static GrabValue<float> ng_release = 0.5f;    // 100ms
 
-    hw.ProcessAnalogControls();
+    hw.ProcessAllControls();
     hw.tap.Debounce();
 
     // pass-thru until module is initialized
@@ -58,10 +78,25 @@ void AudioCallback(AudioHandle::InputBuffer  in,
         return;
     }
 
-    const bool shift = hw.tap.Pressed() && !first;
+    const bool shift = hw.SwitchPressed() && !first;
 
     const float cv0 = hw.GetKnobValue(DaisyVersio::KNOB_0);
     const float cv1 = hw.GetKnobValue(DaisyVersio::KNOB_1);
+
+    if (first) {
+        Settings &settings = storage.GetSettings();
+
+        ng_threshold.Update(settings.ng_threshold);
+        ng_release.Update(settings.ng_release);
+
+    } else if (!shift && prevshift) { // save settings when exiting shift mode
+        Settings &settings = storage.GetSettings();
+
+        settings.ng_threshold = ng_threshold.Get();
+        settings.ng_release = ng_release.Get();
+
+        dosave = true;
+    }
 
     if (!shift) {
         cv_mix.Update(cv0);
@@ -110,7 +145,7 @@ void AudioCallback(AudioHandle::InputBuffer  in,
     } else {
         dist.SetParam(PRatDist::P_DRYWET, mix);
     }
-    dist.SetParam(PRatDist::P_VOL, volume);
+    dist.SetParam(PRatDist::P_GAIN_IN, volume);
     dist.SetParam(PRatDist::P_HARD, hard);
     dist.SetParam(PRatDist::P_TIGHT, tight);
     dist.SetParam(PRatDist::P_RUETZ, ruetz);
@@ -136,6 +171,7 @@ void AudioCallback(AudioHandle::InputBuffer  in,
     envVal = env;
 
     first = false;
+    prevshift = shift;
 }
 
 
@@ -147,6 +183,8 @@ int main(void)
     //hw.StartLog();
     hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
     hw.SetAudioBlockSize(4);
+
+    storage.Init(default_settings);
 
     dist.Init(hw.AudioSampleRate());
     ng.Init(hw.AudioSampleRate());
@@ -163,11 +201,17 @@ int main(void)
     while (1) {
         if (!initialized) {
             if (System::GetNow() - boottime < 1000) {
+                // starting with button pressed restore default settings
+                if (hw.SwitchPressed()) {
+                    Settings &settings = storage.GetSettings();
+                    settings = default_settings;
+                    dosave = true;
+                }
                 if (first) {
                     hw.SetLed(DaisyVersio::LED_0, 1.f, 0.f, 0.f);
                     hw.SetLed(DaisyVersio::LED_1, 1.f, 0.f, 1.f);
-                    hw.SetLed(DaisyVersio::LED_2, 1.f, 0.f, 1.f);
-                    hw.SetLed(DaisyVersio::LED_3, 1.f, 0.f, 0.f);
+                    hw.SetLed(DaisyVersio::LED_2, 1.f, 0.f, 0.f);
+                    hw.SetLed(DaisyVersio::LED_3, 1.f, 0.f, dosave ? 0.f : 1.f);
                     hw.UpdateLeds();
 
                     first = false;
@@ -181,6 +225,11 @@ int main(void)
             hw.SetLed(DaisyVersio::LED_2, satVal, 0.f, 0.f);
             hw.SetLed(DaisyVersio::LED_3, satVal, 0.f, 0.f);
             hw.UpdateLeds();
+            // save settings
+            if (dosave) {
+                storage.Save();
+                dosave = false;
+            }
         }
     }
 }

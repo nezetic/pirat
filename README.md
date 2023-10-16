@@ -12,14 +12,13 @@ based on the amazing [Rodent VST](https://github.com/ValdemarOrn/SharpSoundPlugi
 The original VST includes:
 
 - a very nice sounding emulation (based on in-depth ProCo Rat circuit analysis);
-- 3 classic parameters (Gain / Tone and Volume);
+- 3 classic parameters (Gain / Tone and Level);
 - various mods inspired from the hardware (turbo, ruetz, ...).
 
 
 PRat inherits the circuit emulation from Rodent and adds its own flavor to it:
 
 - stereo signal path;
-- level parameter to attenuate the signal before the gain stage;
 - dry / wet mixer to cross-fade between clean / overdrive / distortion;
 - mixer to blend between silicon and diode clipping in hard clipping (turbo) mode;
 - optional noise gate (based on the wonderful [NoiseInvader](https://github.com/ValdemarOrn/NoiseInvaderVST) VST).
@@ -52,6 +51,21 @@ The **Legio** firmware adds:
 
 - customizable threshold / release for the noise gate.
 
+<img src="docs/static/prat_legio.jpg" width="512">
+
+---
+
+Installation
+------------
+
+PRat firmware can be directly downloaded on [GitHub](https://github.com/nezetic/prat/releases) (or compiled from sources).
+
+It can be flashed using Electro-smith [Daisy web programmer](https://electro-smith.github.io/Programmer/) or Noise Engineering [portal](https://portal.noiseengineering.us).
+
+**Warning**: flashing your module with PRat will be done at your own risk!
+That said, Daisy based modules are able to recover if anything goes wrong during the flash procedure.
+So it should always be possible to restart it and/or flash an official firmware back.
+
 ---
 
 Compilation
@@ -62,7 +76,7 @@ Compilation
 #### linux (ubuntu)
 
 ```
-$ sudo apt-get install build-essential git cmake gcc-arm-none-eabi binutils-arm-none-eabi jq zstd libgl-dev
+$ sudo apt-get install build-essential git cmake gcc-arm-none-eabi binutils-arm-none-eabi dfu-util jq zstd libgl-dev
 ```
 
 #### macOS
@@ -70,8 +84,13 @@ $ sudo apt-get install build-essential git cmake gcc-arm-none-eabi binutils-arm-
 Require Xcode and MacPorts (or any alternative).
 
 ```
-$ sudo port install cmake arm-none-eabi-gcc arm-none-eabi-binutils jq zstd
+$ sudo port install cmake dfu-util jq zstd
 ```
+
+The `arm-none-eabi` compilation tools are currently broken on MacPorts.
+
+Official [ARM packages](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads) can be used instead (`arm-gnu-toolchain-12.3.rel1-darwin-arm64-arm-none-eabi.pkg` has been successfully tested).
+Tools are installed in a non-standard directory (ex: `/Applications/ArmGNUToolchain/12.3.rel1/arm-none-eabi/bin`) that need to be exported in the PATH environment variable.
 
 ### Configure
 
@@ -109,8 +128,6 @@ $ make flash_versio
 ```
 
 #### Legio
-
-**Warning**: not (yet!) owning any of the Legio modules, the firmware is totally **untested** and might be **unusable**!
 
 ```
 $ make firmware_legio
