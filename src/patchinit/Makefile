@@ -1,5 +1,5 @@
 # Project Name
-TARGET = PRat
+TARGET = PRat_patchinit
 
 # Sources
 CPP_SOURCES += $(wildcard *.cpp ../prat/*.cpp ../noisegate/*.cpp)

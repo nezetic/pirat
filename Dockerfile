@@ -15,6 +15,6 @@ COPY src ${BUILDDIR}/src/
 
 RUN cd build && cmake .. -DDEPS_ONLY=0 && make test
 
-RUN cd build && make firmware
+RUN cd build && make firmware && make firmware_versio && make firmware_legio
 
 RUN cd build && make && make install

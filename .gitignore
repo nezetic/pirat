@@ -1,5 +1,4 @@
 /build
-/src/patchinit/build
 /src/vcvrack/build
 /src/vcvrack/dist
 /**/plugin.so

@@ -1,0 +1,69 @@
+name: PRat build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{github.workspace}}/build
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install dependencies
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: jq zstd libgl-dev
+        version: 1.0
+
+    - name: Install Arm GNU Toolchain (arm-none-eabi-gcc)
+      uses: carlosperate/arm-none-eabi-gcc-action@v1
+      with:
+        release: '12.3.Rel1'
+
+    - name: Configure CMake (deps only)
+      working-directory: ${{github.workspace}}
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DDEPS_ONLY=1
+
+    - name: Make dependencies
+      run: make deps
+
+    - name: Configure CMake
+      working-directory: ${{github.workspace}}
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DDEPS_ONLY=0
+
+    - name: Build Test
+      run: make test
+
+    - name: Run Test
+      run: ./test
+
+    - name: Build patchinit
+      run: make firmware
+
+    - name: Build versio
+      run: make firmware_versio
+
+    - name: Build legio
+      run: make firmware_legio
+
+    - name: Hash firmware artifacts
+      run: sha256sum PRat_*.bin > PRat.sha256
+
+    - name: Archive firmware artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: PRat Firmware
+        path: |
+          ${{github.workspace}}/build/PRat.sha256
+          ${{github.workspace}}/build/PRat_*.bin
+
