@@ -3,7 +3,7 @@
 PRat Distortion
 ===============
 
-[![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
+[![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause) [![PRat build](https://github.com/nezetic/prat/actions/workflows/build.yml/badge.svg)](https://github.com/nezetic/prat/actions/workflows/build.yml)
 
 PRat is a **ProCo Rat** stomp box emulation, redesigned for Eurorack,
 based on the amazing [Rodent VST](https://github.com/ValdemarOrn/SharpSoundPlugins) from Valdemar Erlingsson.
