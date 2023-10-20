@@ -22,6 +22,9 @@ using namespace prat;
 // encoder per-step increment (16 steps from 0 to 1)
 #define ENCODER_INCR 0.0625f
 
+// encoder smoothing parameter
+#define ENCODER_SMOOTH 0.01f // 10ms
+
 // pitch CV input range is -2 -> 5V
 #define PITCH_CV_0V 0.28571428571428575f
 
@@ -62,6 +65,10 @@ bool initialized = false;
 PRatDist dist;
 // PRat noise gate
 NoiseGate ng;
+
+// smoothing filter for the legio encoder values
+Port sm_gain;
+Port sm_level;
 
 // UX values
 float envVal = 0.f;
@@ -157,13 +164,17 @@ void AudioCallback(AudioHandle::InputBuffer  in,
         ng_release.Update(cv1);
     }
 
+    // smooth encoder values
+    const float pr_gain_sm = sm_gain.Process(pr_gain);
+    const float pr_level_sm = sm_level.Process(pr_level);
+
     const float pitch_cv = hw.controls[DaisyLegio::CONTROL_PITCH].Value();
     // pitch CV range is -2V -> 5V, we want to remap it in range 0-5V
     const float gain_cv = fclamp((pitch_cv - PITCH_CV_0V) / (1.0f - PITCH_CV_0V), 0.f, 1.f);
 
-    const float gain = fclamp(pr_gain + gain_cv, 0.f, 1.f);
+    const float gain = fclamp(pr_gain_sm + gain_cv, 0.f, 1.f);
     const float filter = fclamp(cv_filter.Get(), 0.f, 1.f);
-    const float level = fclamp(pr_level, 0.f, 1.f);
+    const float level = fclamp(pr_level_sm, 0.f, 1.f);
     const float mix = fclamp(cv_mix.Get(), 0.f, 1.f);
 
     const int sw_clip = hw.sw[DaisyLegio::SW_LEFT].Read();
@@ -209,9 +220,9 @@ void AudioCallback(AudioHandle::InputBuffer  in,
     if (last_incr != 0 && (System::GetNow() - last_incr) < 1000) {
         if (shift) {
             satVal = 0.f;
-            envVal = pr_level;
+            envVal = pr_level_sm;
         } else {
-            satVal = pr_gain;
+            satVal = pr_gain_sm;
             envVal = 0.f;
         }
     } else {
@@ -242,8 +253,12 @@ int main(void)
 
     storage.Init(default_settings);
 
-    dist.Init(hw.AudioSampleRate());
-    ng.Init(hw.AudioSampleRate());
+    const float sr = hw.AudioSampleRate();
+    dist.Init(sr);
+    ng.Init(sr);
+
+    sm_gain.Init(sr, ENCODER_SMOOTH);
+    sm_level.Init(sr, ENCODER_SMOOTH);
 
     // as eurorack audio signals are quite hot, reduce levels a bit before gain stage
     dist.SetParam(PRatDist::P_GAIN_IN, 0.50f);

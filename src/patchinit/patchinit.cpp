@@ -238,8 +238,9 @@ int main(void)
     toggle.Init(hw.B8);
     button.Init(hw.B7);
 
-    dist.Init(hw.AudioSampleRate());
-    ng.Init(hw.AudioSampleRate());
+    const float sr = hw.AudioSampleRate();
+    dist.Init(sr);
+    ng.Init(sr);
 
     // as eurorack audio signals are quite hot, reduce levels a bit before gain stage
     dist.SetParam(PRatDist::P_GAIN_IN, 0.50f);

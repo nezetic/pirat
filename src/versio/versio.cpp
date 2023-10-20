@@ -186,8 +186,9 @@ int main(void)
 
     storage.Init(default_settings);
 
-    dist.Init(hw.AudioSampleRate());
-    ng.Init(hw.AudioSampleRate());
+    const float sr = hw.AudioSampleRate();
+    dist.Init(sr);
+    ng.Init(sr);
 
     ng.SetParam(NoiseGate::P_DETECTOR_GAIN, 0.5);  // * 1
     ng.SetParam(NoiseGate::P_REDUCTION, 0.4);      // -40db
