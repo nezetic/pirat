@@ -7,7 +7,7 @@
 #include "Bilinear.h"
 
 
-using namespace prat;
+using namespace pirat;
 
 
 void TFGain::Init(float sample_rate) {

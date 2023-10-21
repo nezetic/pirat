@@ -1,4 +1,4 @@
-name: PRat build
+name: PiRAT build
 
 on:
   push:
@@ -68,13 +68,13 @@ jobs:
       run: make firmware_legio
 
     - name: Hash firmware artifacts
-      run: sha256sum PRat_*.bin > PRat.sha256
+      run: sha256sum PiRAT_*.bin > PiRAT.sha256
 
     - name: Archive firmware artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: PRat Firmware
+        name: PiRAT Firmware
         path: |
-          ${{github.workspace}}/build/PRat.sha256
-          ${{github.workspace}}/build/PRat_*.bin
+          ${{github.workspace}}/build/PiRAT.sha256
+          ${{github.workspace}}/build/PiRAT_*.bin
 

@@ -7,7 +7,7 @@
 #include "Utils.h"
 
 
-using namespace prat;
+using namespace pirat;
 
 
 void EnvelopeFollower::Init(double fs, double releaseMs) {

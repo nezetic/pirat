@@ -4,15 +4,15 @@
  * https://github.com/ValdemarOrn/SharpSoundPlugins/tree/master/Rodent.V2
  */
 #pragma once
-#ifndef PRAT_TRANSFER_H
-#define PRAT_TRANSFER_H
+#ifndef PIRAT_TRANSFER_H
+#define PIRAT_TRANSFER_H
 
 #ifdef __cplusplus
 
 #include <cstddef>
 #include <array>
 
-namespace prat
+namespace pirat
 {
 
 /**
@@ -131,6 +131,6 @@ class Transfer
         std::array<float, modulo> bufOutR;
 };
 
-} // namespace prat
+} // namespace pirat
 #endif
 #endif

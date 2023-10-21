@@ -1,13 +1,13 @@
 #pragma once
-#ifndef PRAT_GAIN_H
-#define PRAT_GAIN_H
+#ifndef PIRAT_GAIN_H
+#define PIRAT_GAIN_H
 
 #include "Transfer.h"
 #include "Utils.h"
 
 #ifdef __cplusplus
 
-namespace prat
+namespace pirat
 {
 
 class TFGain : public Transfer<4>
@@ -65,6 +65,6 @@ class TFGain : public Transfer<4>
         bool ruetz_ = false;
 };
 
-} // namespace prat
+} // namespace pirat
 #endif
 #endif

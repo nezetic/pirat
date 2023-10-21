@@ -5,8 +5,8 @@
  */
 #pragma once
 
-#ifndef PRAT_ENVFOLLOWER_H
-#define PRAT_ENVFOLLOWER_H
+#ifndef PIRAT_ENVFOLLOWER_H
+#define PIRAT_ENVFOLLOWER_H
 
 #include "Biquad.h"
 #include "Indicators.h"
@@ -15,7 +15,7 @@
 
 #ifdef __cplusplus
 
-namespace prat
+namespace pirat
 {
     class EnvelopeFollower
     {
@@ -67,4 +67,4 @@ namespace prat
 }
 
 #endif
-#endif // PRAT_ENVFOLLOWER_H
+#endif // PIRAT_ENVFOLLOWER_H

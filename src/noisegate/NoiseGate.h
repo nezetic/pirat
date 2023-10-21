@@ -5,8 +5,8 @@
    */
 #pragma once
 
-#ifndef PRAT_NOISEGATE_H
-#define PRAT_NOISEGATE_H
+#ifndef PIRAT_NOISEGATE_H
+#define PIRAT_NOISEGATE_H
 
 #include "Expander.h"
 #include "EnvelopeFollower.h"
@@ -15,7 +15,7 @@
 
 #ifdef __cplusplus
 
-namespace prat
+namespace pirat
 {
 /** Noise gate module
 
@@ -143,4 +143,4 @@ Based on the amazing Valdemar Erlingsson NoiseInvader VST.
 }
 
 #endif
-#endif // PRAT_NOISEGATE_H
+#endif // PIRAT_NOISEGATE_H

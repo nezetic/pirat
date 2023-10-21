@@ -5,8 +5,8 @@
  */
 #pragma once
 
-#ifndef PRAT_INDICATORS_H
-#define PRAT_INDICATORS_H
+#ifndef PIRAT_INDICATORS_H
+#define PIRAT_INDICATORS_H
 
 #include "Utils.h"
 
@@ -14,7 +14,7 @@
 
 #include <array>
 
-namespace prat
+namespace pirat
 {
     class Sma
     {
@@ -93,4 +93,4 @@ namespace prat
 }
 
 #endif
-#endif // PRAT_INDICATORS_H
+#endif // PIRAT_INDICATORS_H

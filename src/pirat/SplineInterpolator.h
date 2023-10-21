@@ -4,15 +4,15 @@
  * https://github.com/ValdemarOrn/SharpSoundPlugins/tree/master/Rodent.V2
  */
 #pragma once
-#ifndef PRAT_SPLINEINTERPOLATOR_H
-#define PRAT_SPLINEINTERPOLATOR_H
+#ifndef PIRAT_SPLINEINTERPOLATOR_H
+#define PIRAT_SPLINEINTERPOLATOR_H
 
 #ifdef __cplusplus
 
 #include <algorithm>
 #include <array>
 
-namespace prat
+namespace pirat
 {
 
 template<std::size_t T>
@@ -78,6 +78,6 @@ class SplineInterpolator
         const std::array<float, T> &xs, &ys, &ks;
 };
 
-} // namespace prat
+} // namespace pirat
 #endif
 #endif

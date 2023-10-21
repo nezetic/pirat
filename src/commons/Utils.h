@@ -1,6 +1,6 @@
 #pragma once
-#ifndef PRAT_UTILS_H
-#define PRAT_UTILS_H
+#ifndef PIRAT_UTILS_H
+#define PIRAT_UTILS_H
 
 #include "DSP.h"
 
@@ -13,7 +13,7 @@
 #include <cassert>
 #include <cfloat>
 
-namespace prat
+namespace pirat
 {
 
 class Utils
@@ -159,6 +159,6 @@ class Utils
     }
 };
 
-} // namespace prat
+} // namespace pirat
 #endif
 #endif

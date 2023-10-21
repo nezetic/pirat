@@ -1,5 +1,5 @@
 /**
- * Patch.init implementation of PRat distortion, featuring:
+ * Patch.init implementation of PiRAT distortion, featuring:
  *
  * - stereo signal path;
  * - knobs with dedicated CV controls;
@@ -12,7 +12,7 @@
 #include "daisy_patch_sm.h"
 #include "daisysp.h"
 
-#include "PRatDist.h"
+#include "PiRATDist.h"
 #include "NoiseGate.h"
 #include "GrabValue.h"
 #include "Gate.h"
@@ -21,7 +21,7 @@ using namespace daisy;
 using namespace daisysp;
 using namespace patch_sm;
 
-using namespace prat;
+using namespace pirat;
 
 
 struct Settings
@@ -63,9 +63,9 @@ bool initialized = false;
 Switch toggle;
 Switch button;
 
-// PRat distortion
-PRatDist dist;
-// PRat noise gate
+// PiRAT distortion
+PiRATDist dist;
+// PiRAT noise gate
 NoiseGate ng;
 
 // UX values
@@ -175,20 +175,20 @@ void AudioCallback(AudioHandle::InputBuffer  in,
     }
     prevtoggle = curtoggle;
 
-    dist.SetParam(PRatDist::P_GAIN, gain);
-    dist.SetParam(PRatDist::P_FILTER, filter);
-    dist.SetParam(PRatDist::P_LEVEL, level);
+    dist.SetParam(PiRATDist::P_GAIN, gain);
+    dist.SetParam(PiRATDist::P_FILTER, filter);
+    dist.SetParam(PiRATDist::P_LEVEL, level);
     // in hard mode, mix Silicon / Led clippers
     if (hard >= 0.5f) {
         hw.SetLed(true);
-        dist.SetParam(PRatDist::P_DRYWET, 1.f);
-        dist.SetParam(PRatDist::P_SILED, mix);
+        dist.SetParam(PiRATDist::P_DRYWET, 1.f);
+        dist.SetParam(PiRATDist::P_SILED, mix);
     } else {
         hw.SetLed(false);
-        dist.SetParam(PRatDist::P_DRYWET, mix);
+        dist.SetParam(PiRATDist::P_DRYWET, mix);
     }
-    dist.SetParam(PRatDist::P_HARD, hard);
-    dist.SetParam(PRatDist::P_RUETZ, ruetz);
+    dist.SetParam(PiRATDist::P_HARD, hard);
+    dist.SetParam(PiRATDist::P_RUETZ, ruetz);
 
     dist.Update();
 
@@ -243,7 +243,7 @@ int main(void)
     ng.Init(sr);
 
     // as eurorack audio signals are quite hot, reduce levels a bit before gain stage
-    dist.SetParam(PRatDist::P_GAIN_IN, 0.50f);
+    dist.SetParam(PiRATDist::P_GAIN_IN, 0.50f);
 
     ng.SetParam(NoiseGate::P_DETECTOR_GAIN, 0.5);  // * 1
     ng.SetParam(NoiseGate::P_REDUCTION, 0.4);      // -40db

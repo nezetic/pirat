@@ -1,13 +1,13 @@
 #pragma once
 
-#ifndef PRAT_CROSSFADE_H
-#define PRAT_CROSSFADE_H
+#ifndef PIRAT_CROSSFADE_H
+#define PIRAT_CROSSFADE_H
 
 #include "DSP.h"
 
 #ifdef __cplusplus
 
-namespace prat
+namespace pirat
 {
 #ifdef USE_DAISYSP
     class CrossFade: public daisysp::CrossFade {
@@ -45,4 +45,4 @@ namespace prat
 }
 
 #endif
-#endif // PRAT_CROSSFADE_H
+#endif // PIRAT_CROSSFADE_H

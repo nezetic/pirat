@@ -1,11 +1,11 @@
 # Project Name
-TARGET = PRat_patchinit
+TARGET = PiRAT_patchinit
 
 # Sources
-CPP_SOURCES += $(wildcard *.cpp ../prat/*.cpp ../noisegate/*.cpp)
+CPP_SOURCES += $(wildcard *.cpp ../pirat/*.cpp ../noisegate/*.cpp)
 
 # Flags
-CPP_STANDARD=-I../commons -I../prat -I../noisegate -DUSE_DAISYSP -std=gnu++14
+CPP_STANDARD=-I../commons -I../pirat -I../noisegate -DUSE_DAISYSP -std=gnu++14
 
 # Library Locations
 LIBDAISY_DIR ?= ../../../libDaisy

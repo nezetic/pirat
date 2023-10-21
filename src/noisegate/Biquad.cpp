@@ -8,7 +8,7 @@
 #include "Biquad.h"
 #include "Utils.h"
 
-namespace prat
+namespace pirat
 {
     void Biquad::Init(FilterType filterType, int samplerate) {
         Type = filterType;

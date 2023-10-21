@@ -7,7 +7,7 @@
 #include "Utils.h"
 
 
-using namespace prat;
+using namespace pirat;
 
 
 double Expander::Expand(double dbVal) {

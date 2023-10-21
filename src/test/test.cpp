@@ -1,9 +1,9 @@
-#include "PRatDist.h"
+#include "PiRATDist.h"
 #include "NoiseGate.h"
 
-using namespace prat;
+using namespace pirat;
 
-PRatDist dist;
+PiRATDist dist;
 NoiseGate ng;
 
 
@@ -24,11 +24,11 @@ int main() {
     float signal = 6.66f;
 
     for (size_t i = 0; i < 16; i++) {
-        dist.SetParam(PRatDist::P_GAIN, 0.32f + (0.1f * i));
-        dist.SetParam(PRatDist::P_FILTER, 0.25f + (0.1f * i));
-        dist.SetParam(PRatDist::P_LEVEL, 0.32f);
-        dist.SetParam(PRatDist::P_DRYWET, 1.f);
-        dist.SetParam(PRatDist::P_HARD, 1.f);
+        dist.SetParam(PiRATDist::P_GAIN, 0.32f + (0.1f * i));
+        dist.SetParam(PiRATDist::P_FILTER, 0.25f + (0.1f * i));
+        dist.SetParam(PiRATDist::P_LEVEL, 0.32f);
+        dist.SetParam(PiRATDist::P_DRYWET, 1.f);
+        dist.SetParam(PiRATDist::P_HARD, 1.f);
 
         dist.Update();
 

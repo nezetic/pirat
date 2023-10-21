@@ -1,11 +1,11 @@
-<img src="docs/res/prat_logo_small.png" width="212">
+<img src="docs/res/pirat_logo_small.png" width="212">
 
-PRat Distortion
-===============
+PiRAT Distortion
+================
 
-[![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause) [![PRat build](https://github.com/nezetic/prat/actions/workflows/build.yml/badge.svg)](https://github.com/nezetic/prat/actions/workflows/build.yml)
+[![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause) [![PiRAT build](https://github.com/nezetic/pirat/actions/workflows/build.yml/badge.svg)](https://github.com/nezetic/pirat/actions/workflows/build.yml)
 
-PRat is a **ProCo Rat** stomp box emulation, redesigned for Eurorack,
+PiRAT is a **ProCo Rat** stomp box emulation, redesigned for Eurorack,
 based on the amazing [Rodent VST](https://github.com/ValdemarOrn/SharpSoundPlugins) from Valdemar Erlingsson.
 
 
@@ -16,7 +16,7 @@ The original VST includes:
 - various mods inspired from the hardware (turbo, ruetz, ...).
 
 
-PRat inherits the circuit emulation from Rodent and adds its own flavor to it:
+PiRAT inherits the circuit emulation from Rodent and adds its own flavor to it:
 
 - stereo signal path;
 - dry / wet mixer to cross-fade between clean / overdrive / distortion;
@@ -24,7 +24,7 @@ PRat inherits the circuit emulation from Rodent and adds its own flavor to it:
 - optional noise gate (based on the wonderful [NoiseInvader](https://github.com/ValdemarOrn/NoiseInvaderVST) VST).
 
 
-PRat is written using [DaisySP](https://github.com/electro-smith/DaisySP), and can run on:
+PiRAT is written using [DaisySP](https://github.com/electro-smith/DaisySP), and can run on:
 
 - VCV Rack 2;
 - Daisy Patch SM ([patch.init](https://www.electro-smith.com/daisy/patchinit) Eurorack module);
@@ -38,31 +38,31 @@ The **Daisy Patch SM** firmware adds:
 - envelope follower (both raw signal and a gate with adjustable threshold);
 - trigger to gate (with variable length).
 
-<img src="docs/static/prat_patch_init.jpg" width="512">
+<img src="docs/static/pirat_patch_init.jpg" width="512">
 
 The **Versio** firmware adds:
 
 - customizable threshold / release for the noise gate;
 - envelope modulation of gain / filter (with attenuverters).
 
-<img src="docs/static/prat_versio.jpg" width="512">
+<img src="docs/static/pirat_versio.jpg" width="512">
 
 The **Legio** firmware adds:
 
 - customizable threshold / release for the noise gate.
 
-<img src="docs/static/prat_legio.jpg" width="512">
+<img src="docs/static/pirat_legio.jpg" width="512">
 
 ---
 
 Installation
 ------------
 
-PRat firmware can be directly downloaded on [GitHub](https://github.com/nezetic/prat/releases) (or compiled from sources).
+PiRAT firmware can be directly downloaded on [GitHub](https://github.com/nezetic/pirat/releases) (or compiled from sources).
 
 It can be flashed using Electro-smith [Daisy web programmer](https://electro-smith.github.io/Programmer/) or Noise Engineering [portal](https://portal.noiseengineering.us).
 
-**Warning**: flashing your module with PRat will be done at your own risk!
+**Warning**: flashing your module with PiRAT will be done at your own risk!
 That said, Daisy based modules are able to recover if anything goes wrong during the flash procedure.
 So it should always be possible to restart it and/or flash an official firmware back.
 
@@ -139,5 +139,5 @@ $ make flash_legio
 License
 -------
 
-PRat is licensed under **2-Clause BSD**, a free and open-source license. For more information, please see
+PiRAT is licensed under **2-Clause BSD**, a free and open-source license. For more information, please see
 [BSD-2-Clause](https://opensource.org/licenses/BSD-2-Clause).

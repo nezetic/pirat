@@ -4,8 +4,8 @@
  * https://github.com/ValdemarOrn/SharpSoundPlugins/tree/master/Rodent.V2
  */
 #pragma once
-#ifndef PRAT_BILINEAR_H
-#define PRAT_BILINEAR_H
+#ifndef PIRAT_BILINEAR_H
+#define PIRAT_BILINEAR_H
 
 #include "DSP.h"
 
@@ -15,7 +15,7 @@
 #include <array>
 #include <vector>
 
-namespace prat
+namespace pirat
 {
 
 template<std::size_t T>
@@ -238,6 +238,6 @@ class Bilinear<5>
 };
 
 
-} // namespace prat
+} // namespace pirat
 #endif
 #endif

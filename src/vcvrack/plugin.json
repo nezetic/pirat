@@ -1,6 +1,6 @@
 {
-  "slug": "PRat",
-  "name": "PRat",
+  "slug": "PiRAT",
+  "name": "PiRAT",
   "version": "2.0.0",
   "license": "BSD-2-Clause",
   "brand": "Mad Chodpa",
@@ -14,9 +14,9 @@
   "changelogUrl": "",
   "modules": [
     {
-      "slug": "PRat",
-      "name": "PRat",
-      "description": "PRat Distortion",
+      "slug": "PiRAT",
+      "name": "PiRAT",
+      "description": "PiRAT Distortion",
       "tags": []
     }
   ]

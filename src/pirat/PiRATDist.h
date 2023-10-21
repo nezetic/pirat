@@ -1,6 +1,6 @@
 #pragma once
-#ifndef PRAT_DIST_H
-#define PRAT_DIST_H
+#ifndef PIRAT_DIST_H
+#define PIRAT_DIST_H
 
 #include "DSP.h"
 
@@ -19,18 +19,18 @@
 
 #ifdef __cplusplus
 
-namespace prat
+namespace pirat
 {
 /** ProCo Rat 2 distortion module
 
 Ported from the amazing Valdemar Erlingsson Rodent V2 VST.
 
 */
-class PRatDist
+class PiRATDist
 {
   public:
-    PRatDist(): Clipper(Splines::D1N914TF), Clipper2(Splines::LEDTF) {}
-    ~PRatDist() {}
+    PiRATDist(): Clipper(Splines::D1N914TF), Clipper2(Splines::LEDTF) {}
+    ~PiRATDist() {}
 
     static constexpr int P_GAIN    = 0;
     static constexpr int P_FILTER  = 1;
@@ -43,7 +43,7 @@ class PRatDist
     static constexpr int P_TIGHT   = 8;
     static constexpr int P_RUETZ   = 9;
 
-    /** Initializes the PRat module.
+    /** Initializes the PiRAT module.
      *  \param sample_rate - the sample rate of the audio engine being run.
      */
     void Init(float sample_rate);
@@ -117,12 +117,12 @@ class PRatDist
     float sat_ = 0;
     float sample_rate_ = 44100.f;
 
-    prat::Highpass1 Hipass1;
-    prat::Lowpass1 Lowpass1;
-    prat::TFGain Gain;
-    prat::Highpass1 HipassDC;
-    prat::Lowpass1 Filter;
-    prat::Highpass1 Hipass3;
+    pirat::Highpass1 Hipass1;
+    pirat::Lowpass1 Lowpass1;
+    pirat::TFGain Gain;
+    pirat::Highpass1 HipassDC;
+    pirat::Lowpass1 Filter;
+    pirat::Highpass1 Hipass3;
 
     SplineInterpolator<Splines::D1N914TF_len> Clipper;
     SplineInterpolator<Splines::LEDTF_len> Clipper2;
@@ -131,6 +131,6 @@ class PRatDist
     CrossFade MixerSiLed;
 #endif
 };
-} // namespace prat
+} // namespace pirat
 #endif
 #endif

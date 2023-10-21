@@ -5,12 +5,12 @@
  */
 #pragma once
 
-#ifndef PRAT_BIQUAD
-#define PRAT_BIQUAD
+#ifndef PIRAT_BIQUAD
+#define PIRAT_BIQUAD
 
 #ifdef __cplusplus
 
-namespace prat
+namespace pirat
 {
     class Biquad
     {
@@ -90,4 +90,4 @@ namespace prat
 }
 
 #endif
-#endif // PRAT_BIQUAD
+#endif // PIRAT_BIQUAD

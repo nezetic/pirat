@@ -1,12 +1,12 @@
 #pragma once
-#ifndef PRAT_GATE_H
-#define PRAT_GATE_H
+#ifndef PIRAT_GATE_H
+#define PIRAT_GATE_H
 
 #include "Utils.h"
 
 #ifdef __cplusplus
 
-namespace prat
+namespace pirat
 {
 
 struct Gate {

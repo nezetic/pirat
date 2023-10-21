@@ -1,5 +1,5 @@
-target_sources(PRat PRIVATE
-    #PRatDist.cpp
+target_sources(PiRAT PRIVATE
+    #PiRATDist.cpp
     Highpass1.cpp
     Lowpass1.cpp
     Splines.cpp

@@ -1,13 +1,13 @@
 #pragma once
-#ifndef PRAT_SPLINE_H
-#define PRAT_SPLINE_H
+#ifndef PIRAT_SPLINE_H
+#define PIRAT_SPLINE_H
 
 #ifdef __cplusplus
 
 #include <cstddef>
 #include <array>
 
-namespace prat
+namespace pirat
 {
 
 class Splines
@@ -21,6 +21,6 @@ class Splines
         static const std::array<std::array<float, LEDTF_len>, 3> LEDTF;
 };
 
-} // namespace prat
+} // namespace pirat
 #endif
 #endif

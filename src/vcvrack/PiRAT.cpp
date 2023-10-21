@@ -1,5 +1,5 @@
 /**
- * VCV Rack implementation of PRat distortion, featuring:
+ * VCV Rack implementation of PiRAT distortion, featuring:
  *
  * - mono signal path
  * - virtual knobs with dedicated CV controls
@@ -9,13 +9,13 @@
  */
 #include "plugin.hpp"
 
-#include "PRatDist.h"
+#include "PiRATDist.h"
 #include "NoiseGate.h"
 
-using namespace prat;
+using namespace pirat;
 
 
-struct PRat : Module {
+struct PiRAT : Module {
     enum ParamId {
         GAIN_PARAM,
         FILTER_PARAM,
@@ -41,7 +41,7 @@ struct PRat : Module {
         LIGHTS_LEN
     };
 
-    PRat() {
+    PiRAT() {
         config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
         configParam(GAIN_PARAM, 0.f, 1.f, 0.f, "Voltage gain");
         configParam(FILTER_PARAM, 0.f, 1.f, 0.f, "Tone");
@@ -85,17 +85,17 @@ struct PRat : Module {
 
         const float hard = params[HARD_PARAM].getValue();
 
-        dist.SetParam(PRatDist::P_GAIN, params[GAIN_PARAM].getValue() + gain_cv);
-        dist.SetParam(PRatDist::P_FILTER, params[FILTER_PARAM].getValue() + filter_cv);
-        dist.SetParam(PRatDist::P_LEVEL, params[LEVEL_PARAM].getValue() + level_cv);
+        dist.SetParam(PiRATDist::P_GAIN, params[GAIN_PARAM].getValue() + gain_cv);
+        dist.SetParam(PiRATDist::P_FILTER, params[FILTER_PARAM].getValue() + filter_cv);
+        dist.SetParam(PiRATDist::P_LEVEL, params[LEVEL_PARAM].getValue() + level_cv);
         // in hard mode, mix Silicon / Led clippers
         if (hard >= 0.5f) {
-            dist.SetParam(PRatDist::P_DRYWET, 1.f);
-            dist.SetParam(PRatDist::P_SILED, params[MIX_PARAM].getValue() + mix_cv);
+            dist.SetParam(PiRATDist::P_DRYWET, 1.f);
+            dist.SetParam(PiRATDist::P_SILED, params[MIX_PARAM].getValue() + mix_cv);
         } else {
-            dist.SetParam(PRatDist::P_DRYWET, params[MIX_PARAM].getValue() + mix_cv);
+            dist.SetParam(PiRATDist::P_DRYWET, params[MIX_PARAM].getValue() + mix_cv);
         }
-        dist.SetParam(PRatDist::P_HARD, hard);
+        dist.SetParam(PiRATDist::P_HARD, hard);
 
         // update distortion heavy params every 4 blocks
         if (cycle_count == 0) {
@@ -111,38 +111,38 @@ struct PRat : Module {
     }
 
     int cycle_count = 1;
-    prat::PRatDist dist;
-    prat::NoiseGate ng;
+    pirat::PiRATDist dist;
+    pirat::NoiseGate ng;
 };
 
 
-struct PRatWidget : ModuleWidget {
-    PRatWidget(PRat* module) {
+struct PiRATWidget : ModuleWidget {
+    PiRATWidget(PiRAT* module) {
         setModule(module);
-        setPanel(createPanel(asset::plugin(pluginInstance, "res/PRat.svg")));
+        setPanel(createPanel(asset::plugin(pluginInstance, "res/PiRAT.svg")));
 
         addChild(createWidget<ScrewBlack>(Vec(RACK_GRID_WIDTH, 0)));
         addChild(createWidget<ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
         addChild(createWidget<ScrewBlack>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
         addChild(createWidget<ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-        addParam(createParamCentered<Davies1900hBlackKnob>(mm2px(Vec(12.0, 22.179)), module, PRat::GAIN_PARAM));
-        addParam(createParamCentered<Davies1900hBlackKnob>(mm2px(Vec(39.052, 22.179)), module, PRat::FILTER_PARAM));
-        addParam(createParamCentered<Davies1900hBlackKnob>(mm2px(Vec(12.0, 68.521)), module, PRat::LEVEL_PARAM));
-        addParam(createParamCentered<Davies1900hBlackKnob>(mm2px(Vec(39.052, 68.521)), module, PRat::MIX_PARAM));
-        addParam(createParamCentered<NKK>(mm2px(Vec(25.424, 78.839)), module, PRat::HARD_PARAM));
+        addParam(createParamCentered<Davies1900hBlackKnob>(mm2px(Vec(12.0, 22.179)), module, PiRAT::GAIN_PARAM));
+        addParam(createParamCentered<Davies1900hBlackKnob>(mm2px(Vec(39.052, 22.179)), module, PiRAT::FILTER_PARAM));
+        addParam(createParamCentered<Davies1900hBlackKnob>(mm2px(Vec(12.0, 68.521)), module, PiRAT::LEVEL_PARAM));
+        addParam(createParamCentered<Davies1900hBlackKnob>(mm2px(Vec(39.052, 68.521)), module, PiRAT::MIX_PARAM));
+        addParam(createParamCentered<NKK>(mm2px(Vec(25.424, 78.839)), module, PiRAT::HARD_PARAM));
 
-        addInput(createInputCentered<PJ3410Port>(mm2px(Vec(8.655, 45.267)), module, PRat::GAIN_CV_INPUT));
-        addInput(createInputCentered<PJ3410Port>(mm2px(Vec(41.63, 45.267)), module, PRat::FILTER_CV_INPUT));
-        addInput(createInputCentered<PJ3410Port>(mm2px(Vec(14.049, 90.588)), module, PRat::LEVEL_CV_INPUT));
-        addInput(createInputCentered<PJ3410Port>(mm2px(Vec(37.241, 90.588)), module, PRat::MIX_CV_INPUT));
-        addInput(createInputCentered<PJ3410Port>(mm2px(Vec(13.382, 110.072)), module, PRat::IN_INPUT));
+        addInput(createInputCentered<PJ3410Port>(mm2px(Vec(8.655, 45.267)), module, PiRAT::GAIN_CV_INPUT));
+        addInput(createInputCentered<PJ3410Port>(mm2px(Vec(41.63, 45.267)), module, PiRAT::FILTER_CV_INPUT));
+        addInput(createInputCentered<PJ3410Port>(mm2px(Vec(14.049, 90.588)), module, PiRAT::LEVEL_CV_INPUT));
+        addInput(createInputCentered<PJ3410Port>(mm2px(Vec(37.241, 90.588)), module, PiRAT::MIX_CV_INPUT));
+        addInput(createInputCentered<PJ3410Port>(mm2px(Vec(13.382, 110.072)), module, PiRAT::IN_INPUT));
 
-        addOutput(createOutputCentered<PJ3410Port>(mm2px(Vec(38.317, 110.072)), module, PRat::OUT_OUTPUT));
+        addOutput(createOutputCentered<PJ3410Port>(mm2px(Vec(38.317, 110.072)), module, PiRAT::OUT_OUTPUT));
 
-        addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(28.789, 30.026)), module, PRat::GAIN_LIGHT));
+        addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(28.789, 30.026)), module, PiRAT::GAIN_LIGHT));
     }
 };
 
 
-Model* modelPRat = createModel<PRat, PRatWidget>("PRat");
+Model* modelPiRAT = createModel<PiRAT, PiRATWidget>("PiRAT");

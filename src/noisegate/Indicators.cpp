@@ -7,7 +7,7 @@
 #include "Utils.h"
 
 
-using namespace prat;
+using namespace pirat;
 
 
 void Sma::Init(size_t sampleCount) {

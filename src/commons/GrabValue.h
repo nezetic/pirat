@@ -1,10 +1,10 @@
 #pragma once
-#ifndef PRAT_GRABVALUE_H
-#define PRAT_GRABVALUE_H
+#ifndef PIRAT_GRABVALUE_H
+#define PIRAT_GRABVALUE_H
 
 #ifdef __cplusplus
 
-namespace prat
+namespace pirat
 {
 
 enum GrabDir {

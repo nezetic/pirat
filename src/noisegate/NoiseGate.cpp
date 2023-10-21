@@ -1,7 +1,7 @@
 #include "NoiseGate.h"
 #include "Utils.h"
 
-using namespace prat;
+using namespace pirat;
 
 
 void NoiseGate::Process(

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(PRat VERSION 1.0)
+project(PiRAT VERSION 1.0)
 
 include(ExternalProject)
 
@@ -64,7 +64,7 @@ ExternalProject_Get_Property(RackSDK SOURCE_DIR)
 set(RACK_DIR ${SOURCE_DIR})
 
 #
-# PRat
+# PiRAT
 #
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -82,11 +82,11 @@ add_definitions(-DUSE_DAISYSP)
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 
 if(NOT DEPS_ONLY)
-# compile PRat library
-add_library(PRat STATIC ./src/prat/PRatDist.cpp)
-target_include_directories(PRat PRIVATE "${SOURCE_DIR}/commons" ${DAISYSP_INC})
-add_dependencies(PRat DaisySP-build)
-set(PRAT_LIB ${PROJECT_BINARY_DIR}/libPRat.a)
+# compile PiRAT library
+add_library(PiRAT STATIC ./src/pirat/PiRATDist.cpp)
+target_include_directories(PiRAT PRIVATE "${SOURCE_DIR}/commons" ${DAISYSP_INC})
+add_dependencies(PiRAT DaisySP-build)
+set(PIRAT_LIB ${PROJECT_BINARY_DIR}/libPiRAT.a)
 set(NOISEGATE_LIB ${PROJECT_BINARY_DIR}/libNoiseGate.a)
 
 add_library(NoiseGate STATIC ./src/noisegate/NoiseGate.cpp)
@@ -97,8 +97,8 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/src/")
 
 # compile tests
 add_executable(test EXCLUDE_FROM_ALL ${CMAKE_SOURCE_DIR}/src/test/test.cpp)
-target_include_directories(test PRIVATE "${SOURCE_DIR}/commons" "${SOURCE_DIR}/prat" "${SOURCE_DIR}/noisegate" ${DAISYSP_INC})
-target_link_libraries(test PRat NoiseGate ${DAISYSP_LIB})
+target_include_directories(test PRIVATE "${SOURCE_DIR}/commons" "${SOURCE_DIR}/pirat" "${SOURCE_DIR}/noisegate" ${DAISYSP_INC})
+target_link_libraries(test PiRAT NoiseGate ${DAISYSP_LIB})
 
 # compile DaisySP firmware
 add_custom_target(
@@ -165,12 +165,12 @@ if(${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "x86_64")
 add_custom_target(
     vcvrack ALL
     COMMAND ${CMAKE_COMMAND} -E env
-    CXXFLAGS=\"-I${DAISYSP_INC} -I${SOURCE_DIR}/commons -I${SOURCE_DIR}/prat -I${SOURCE_DIR}/noisegate -DUSE_DAISYSP\"
-    LDFLAGS=\"${PRAT_LIB} ${NOISEGATE_LIB} ${DAISYSP_LIB}\"
+    CXXFLAGS=\"-I${DAISYSP_INC} -I${SOURCE_DIR}/commons -I${SOURCE_DIR}/pirat -I${SOURCE_DIR}/noisegate -DUSE_DAISYSP\"
+    LDFLAGS=\"${PIRAT_LIB} ${NOISEGATE_LIB} ${DAISYSP_LIB}\"
     RACK_DIR=\"${RACK_DIR}\"
     make -C ${CMAKE_SOURCE_DIR}/src/vcvrack
 )
-add_dependencies(vcvrack RackSDK-download PRat NoiseGate)
+add_dependencies(vcvrack RackSDK-download PiRAT NoiseGate)
 endif()
 
 endif()

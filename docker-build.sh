@@ -1,16 +1,16 @@
 #!/bin/sh
 ARCH=`uname -m`
 
-docker build -t prat .
+docker build -t pirat .
 
 mkdir -p build
 cd build
 
-id=$(docker create prat)
-docker cp $id:/prat/build/PRat_patchinit.bin .
-docker cp $id:/prat/build/PRat_versio.bin .
-docker cp $id:/prat/build/PRat_legio.bin .
+id=$(docker create pirat)
+docker cp $id:/pirat/build/PiRAT_patchinit.bin .
+docker cp $id:/pirat/build/PiRAT_versio.bin .
+docker cp $id:/pirat/build/PiRAT_legio.bin .
 if [ "${ARCH}" = 'x86_64' ]; then
-    docker cp $id:/root/.Rack2/plugins/PRat-2.0.0-lin.vcvplugin .
+    docker cp $id:/root/.Rack2/plugins/PiRAT-2.0.0-lin.vcvplugin .
 fi
 docker rm -v $id

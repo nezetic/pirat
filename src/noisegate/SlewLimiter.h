@@ -5,12 +5,12 @@
    */
 #pragma once
 
-#ifndef PRAT_SLEWLIMITER_H
-#define PRAT_SLEWLIMITER_H
+#ifndef PIRAT_SLEWLIMITER_H
+#define PIRAT_SLEWLIMITER_H
 
 #ifdef __cplusplus
 
-namespace prat
+namespace pirat
 {
     class SlewLimiter
     {
@@ -60,4 +60,4 @@ namespace prat
 }
 
 #endif
-#endif // PRAT_SLEWLIMITER_H
+#endif // PIRAT_SLEWLIMITER_H

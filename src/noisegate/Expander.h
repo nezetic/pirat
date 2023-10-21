@@ -5,14 +5,14 @@
  */
 #pragma once
 
-#ifndef PRAT_EXPANDER_H
-#define PRAT_EXPANDER_H
+#ifndef PIRAT_EXPANDER_H
+#define PIRAT_EXPANDER_H
 
 #ifdef __cplusplus
 
 #include <cmath>
 
-namespace prat
+namespace pirat
 {
     class Expander
     {
@@ -52,4 +52,4 @@ namespace prat
 }
 
 #endif
-#endif // PRAT_EXPANDER_H
+#endif // PIRAT_EXPANDER_H

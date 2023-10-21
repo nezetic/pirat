@@ -1,6 +1,6 @@
 #pragma once
-#ifndef PRAT_DSP_H
-#define PRAT_DSP_H
+#ifndef PIRAT_DSP_H
+#define PIRAT_DSP_H
 
 #ifdef USE_DAISYSP
 #pragma GCC diagnostic ignored "-Wignored-qualifiers"
@@ -18,7 +18,7 @@
 
 #include <cmath>
 
-namespace prat
+namespace pirat
 {
 
 class DSP

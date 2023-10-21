@@ -1,10 +1,10 @@
-#include "PRatDist.h"
+#include "PiRATDist.h"
 #include "Utils.h"
 
-using namespace prat;
+using namespace pirat;
 
 
-void PRatDist::Init(float sample_rate) {
+void PiRATDist::Init(float sample_rate) {
     Hipass1.Init(sample_rate);
     Lowpass1.Init(sample_rate);
     Gain.Init(sample_rate);
@@ -32,7 +32,7 @@ void PRatDist::Init(float sample_rate) {
 }
 
 
-void PRatDist::SetSampleRate(float sample_rate) {
+void PiRATDist::SetSampleRate(float sample_rate) {
     sample_rate_ = sample_rate;
 
     Hipass1.SetSampleRate(sample_rate);
@@ -46,7 +46,7 @@ void PRatDist::SetSampleRate(float sample_rate) {
 }
 
 
-void PRatDist::Update() {
+void PiRATDist::Update() {
     Hipass1.SetFreq(10.f + p_tight_ * 300.f);
     Gain.SetGain(Utils::ExpResponse(p_gain_));
     Gain.SetRuetz(p_ruetz_ >= 0.5f);
@@ -60,7 +60,7 @@ void PRatDist::Update() {
 }
 
 
-void PRatDist::Process(
+void PiRATDist::Process(
         const float* inputL,
         const float* inputR,
         float* outputL,

@@ -1,5 +1,5 @@
 /**
- * Versio implementation of PRat distortion, featuring:
+ * Versio implementation of PiRAT distortion, featuring:
  *
  * - stereo signal path;
  * - knobs with dedicated CV controls;
@@ -11,14 +11,14 @@
 #include "daisy_versio.h"
 #include "daisysp.h"
 
-#include "PRatDist.h"
+#include "PiRATDist.h"
 #include "NoiseGate.h"
 #include "GrabValue.h"
 
 using namespace daisy;
 using namespace daisysp;
 
-using namespace prat;
+using namespace pirat;
 
 
 struct Settings
@@ -46,9 +46,9 @@ Settings default_settings;
 bool dosave = false;
 bool initialized = false;
 
-// PRat distortion
-PRatDist dist;
-// PRat noise gate
+// PiRAT distortion
+PiRATDist dist;
+// PiRAT noise gate
 NoiseGate ng;
 
 // UX values
@@ -135,21 +135,21 @@ void AudioCallback(AudioHandle::InputBuffer  in,
     const float ruetz = sw_mod == Switch3::POS_CENTER ? 1.f : 0.f;
     const float tight = sw_mod == Switch3::POS_DOWN ? 1.f : 0.f;
 
-    dist.SetParam(PRatDist::P_GAIN, gain);
-    dist.SetParam(PRatDist::P_FILTER, filter);
-    dist.SetParam(PRatDist::P_LEVEL, level);
+    dist.SetParam(PiRATDist::P_GAIN, gain);
+    dist.SetParam(PiRATDist::P_FILTER, filter);
+    dist.SetParam(PiRATDist::P_LEVEL, level);
     // in hard mode, mix Silicon / Led clippers
     if (hard >= 0.5f) {
-        dist.SetParam(PRatDist::P_DRYWET, 1.f);
-        dist.SetParam(PRatDist::P_SILED, mix);
+        dist.SetParam(PiRATDist::P_DRYWET, 1.f);
+        dist.SetParam(PiRATDist::P_SILED, mix);
     } else {
-        dist.SetParam(PRatDist::P_DRYWET, mix);
+        dist.SetParam(PiRATDist::P_DRYWET, mix);
     }
-    dist.SetParam(PRatDist::P_GAIN_IN, volume);
-    dist.SetParam(PRatDist::P_HARD, hard);
-    dist.SetParam(PRatDist::P_TIGHT, tight);
-    dist.SetParam(PRatDist::P_RUETZ, ruetz);
-    dist.SetParam(PRatDist::P_BYPASS, bypass);
+    dist.SetParam(PiRATDist::P_GAIN_IN, volume);
+    dist.SetParam(PiRATDist::P_HARD, hard);
+    dist.SetParam(PiRATDist::P_TIGHT, tight);
+    dist.SetParam(PiRATDist::P_RUETZ, ruetz);
+    dist.SetParam(PiRATDist::P_BYPASS, bypass);
 
     dist.Update();
 

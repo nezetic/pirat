@@ -5,14 +5,14 @@
  */
 #pragma once
 
-#ifndef PRAT_ONEPOLEFILTERS
-#define PRAT_ONEPOLEFILTERS
+#ifndef PIRAT_ONEPOLEFILTERS
+#define PIRAT_ONEPOLEFILTERS
 
 #ifdef __cplusplus
 
 #include <cmath>
 
-namespace prat
+namespace pirat
 {
     class Lp1
     {
@@ -73,4 +73,4 @@ namespace prat
 }
 
 #endif
-#endif // PRAT_ONEPOLEFILTERS
+#endif // PIRAT_ONEPOLEFILTERS

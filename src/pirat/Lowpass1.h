@@ -1,13 +1,13 @@
 #pragma once
-#ifndef PRAT_LOWPASS1_H
-#define PRAT_LOWPASS1_H
+#ifndef PIRAT_LOWPASS1_H
+#define PIRAT_LOWPASS1_H
 
 #include "Transfer.h"
 #include "Utils.h"
 
 #ifdef __cplusplus
 
-namespace prat
+namespace pirat
 {
 
 class Lowpass1 : public Transfer<2>
@@ -51,6 +51,6 @@ class Lowpass1 : public Transfer<2>
         float sample_rate_ = 44100.f;
 };
 
-} // namespace prat
+} // namespace pirat
 #endif
 #endif

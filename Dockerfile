@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-ENV BUILDDIR=/prat
+ENV BUILDDIR=/pirat
 WORKDIR ${BUILDDIR}
 
 RUN apt-get update && apt-get install -y \

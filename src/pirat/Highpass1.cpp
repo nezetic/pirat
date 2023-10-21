@@ -7,7 +7,7 @@
 
 #include <cmath>
 
-using namespace prat;
+using namespace pirat;
 
 
 void Highpass1::Init(float sample_rate) {
