@@ -13,6 +13,7 @@
 #include "PiRATDist.h"
 #include "NoiseGate.h"
 #include "GrabValue.h"
+#include "Slew.h"
 
 using namespace daisy;
 using namespace daisysp;
@@ -67,8 +68,8 @@ PiRATDist dist;
 NoiseGate ng;
 
 // smoothing filter for the legio encoder values
-Port sm_gain;
-Port sm_level;
+Slew sm_gain;
+Slew sm_level;
 
 // UX values
 float envVal = 0.f;
