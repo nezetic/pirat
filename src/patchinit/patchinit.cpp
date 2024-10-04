@@ -212,14 +212,14 @@ void AudioCallback(AudioHandle::InputBuffer  in,
     const float envout = fclamp(env * 5.f, 0.f, 5.f);
     hw.WriteCvOut(CV_OUT_1, envout);
     // generate a gate from the envelope follower
-    dsy_gpio_write(&hw.gate_out_2, env > ef_threshold.Get());
+    hw.gate_out_2.Write(env > ef_threshold.Get());
 
     // output the distortion saturation
     satVal = fclamp(dist.GetSaturation(), 0.f, 5.f);
 
     // generate a gate from the input gate (but with a minimum duration)
     gate.Update(hw.gate_in_2.State(), System::GetNow());
-    dsy_gpio_write(&hw.gate_out_1, gate.State());
+    hw.gate_out_1.Write(gate.State());
 
     first = false;
     prevshift = shift;
