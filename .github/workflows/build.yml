@@ -20,7 +20,7 @@ jobs:
         working-directory: ${{github.workspace}}/build
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Install system dependencies
       working-directory: ${{github.workspace}}
@@ -37,7 +37,7 @@ jobs:
 
     - name: Cache dependencies
       id: cache-deps
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           build/DaisySP-prefix
@@ -71,7 +71,7 @@ jobs:
       run: sha256sum PiRAT_*.bin > PiRAT.sha256
 
     - name: Archive firmware artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: PiRAT Firmware
         path: |
