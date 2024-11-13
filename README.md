@@ -18,7 +18,7 @@ The original VST includes:
 
 PiRAT inherits the circuit emulation from Rodent and adds its own flavor to it:
 
-- stereo signal path;
+- stereo signal path (can act like a simple stereo VCA when bypass is enabled);
 - dry / wet mixer to cross-fade between clean / overdrive / distortion;
 - mixer to blend between silicon and diode clipping in hard clipping (turbo) mode;
 - optional noise gate (based on the wonderful [NoiseInvader](https://github.com/ValdemarOrn/NoiseInvaderVST) VST).

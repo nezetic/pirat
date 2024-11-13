@@ -2,7 +2,7 @@
  * Legio implementation of PiRAT distortion, featuring:
  *
  * - stereo signal path;
- * - knobs with dedicated CV controls;
+ * - knobs with dedicated CV controls (either over gain or level);
  * - hard clip, ruetz and tight mods;
  * - noise gate (with a bypass and adjustable threshold / release).
  *
@@ -12,6 +12,7 @@
 
 #include "PiRATDist.h"
 #include "NoiseGate.h"
+#include "DoubleClicker.h"
 #include "GrabValue.h"
 #include "Slew.h"
 
@@ -30,24 +31,34 @@ using namespace pirat;
 #define PITCH_CV_0V 0.28571428571428575f
 
 
+enum PitchCVDest {
+    GAIN = 0,
+    LEVEL = 1
+};
+
+
 struct Settings
 {
     Settings():
         pr_gain(0.50f),
         pr_level(0.75f),
         ng_threshold(0.4f),  // -45db
-        ng_release(0.5f) {}    // 100ms
+        ng_release(0.5f),    // 100ms
+        pitchcvdest(PitchCVDest::GAIN) {}
 
     float pr_gain;
     float pr_level;
     float ng_threshold;
     float ng_release;
 
+    enum PitchCVDest pitchcvdest;
+
     bool operator==(const Settings &rhs) {
         return Utils::NearlyEqual(pr_gain, rhs.pr_gain)
             && Utils::NearlyEqual(pr_level, rhs.pr_level)
             && Utils::NearlyEqual(ng_threshold, rhs.ng_threshold)
-            && Utils::NearlyEqual(ng_release, rhs.ng_release);
+            && Utils::NearlyEqual(ng_release, rhs.ng_release)
+            && (pitchcvdest == rhs.pitchcvdest);
     }
     bool operator!=(const Settings &rhs) { return !operator==(rhs); }
 };
@@ -70,6 +81,10 @@ NoiseGate ng;
 // smoothing filter for the legio encoder values
 Slew sm_gain;
 Slew sm_level;
+
+// pitch CV destination selector
+enum PitchCVDest pitchcvdest = PitchCVDest::GAIN;
+uint32_t last_dck = 0;
 
 // UX values
 float envVal = 0.f;
@@ -98,6 +113,8 @@ void AudioCallback(AudioHandle::InputBuffer  in,
 
     static uint32_t last_incr = 0;
 
+    static DoubleClicker dck;
+
     static GrabValue<float> cv_filter = 0.f;
     static GrabValue<float> cv_mix = 0.f;
 
@@ -112,7 +129,16 @@ void AudioCallback(AudioHandle::InputBuffer  in,
         return;
     }
 
+    const uint32_t now = System::GetNow();
+
     const bool shift = hw.encoder.Pressed() && !first;
+
+    dck.Update(shift, now);
+    // double clicking shift switch between Gain and Level CV destinations
+    if (dck.DoubleClick()) {
+        pitchcvdest = pitchcvdest == PitchCVDest::GAIN ? PitchCVDest::LEVEL : PitchCVDest::GAIN;
+        last_dck = now;
+    }
 
     const float cv0 = hw.GetKnobValue(DaisyLegio::CONTROL_KNOB_TOP);
     const float cv1 = hw.GetKnobValue(DaisyLegio::CONTROL_KNOB_BOTTOM);
@@ -124,6 +150,7 @@ void AudioCallback(AudioHandle::InputBuffer  in,
         pr_level = settings.pr_level;
         ng_threshold.Update(settings.ng_threshold);
         ng_release.Update(settings.ng_release);
+        pitchcvdest = settings.pitchcvdest;
 
     } else if (!shift && prevshift) { // save settings when exiting shift mode
         Settings &settings = storage.GetSettings();
@@ -132,6 +159,7 @@ void AudioCallback(AudioHandle::InputBuffer  in,
         settings.pr_level = pr_level;
         settings.ng_threshold = ng_threshold.Get();
         settings.ng_release = ng_release.Get();
+        settings.pitchcvdest = pitchcvdest;
 
         // force editing mode to timeout
         last_incr = 0;
@@ -144,7 +172,7 @@ void AudioCallback(AudioHandle::InputBuffer  in,
 
     // encoder is in editing mode
     if (inc != 0) {
-        last_incr = System::GetNow();
+        last_incr = now;
     }
 
     if (!shift) {
@@ -171,11 +199,20 @@ void AudioCallback(AudioHandle::InputBuffer  in,
 
     const float pitch_cv = hw.controls[DaisyLegio::CONTROL_PITCH].Value();
     // pitch CV range is -2V -> 5V, we want to remap it in range 0-5V
-    const float gain_cv = fclamp((pitch_cv - PITCH_CV_0V) / (1.0f - PITCH_CV_0V), 0.f, 1.f);
+    const float pitch_cv_0v = fclamp((pitch_cv - PITCH_CV_0V) / (1.0f - PITCH_CV_0V), 0.f, 1.f);
+
+    float gain_cv = 0.f;
+    float level_cv = 0.f;
+
+    if (pitchcvdest == PitchCVDest::GAIN) {
+        gain_cv = pitch_cv_0v;
+    } else {
+        level_cv = pitch_cv_0v;
+    }
 
     const float gain = fclamp(pr_gain_sm + gain_cv, 0.f, 1.f);
     const float filter = fclamp(cv_filter.Get(), 0.f, 1.f);
-    const float level = fclamp(pr_level_sm, 0.f, 1.f);
+    const float level = fclamp(pr_level_sm + level_cv, 0.f, 1.f);
     const float mix = fclamp(cv_mix.Get(), 0.f, 1.f);
 
     const int sw_clip = hw.sw[DaisyLegio::SW_LEFT].Read();
@@ -218,7 +255,7 @@ void AudioCallback(AudioHandle::InputBuffer  in,
     ng.Process(OUT_L, OUT_R, IN_L, OUT_L, OUT_R, size);
 
     // encoder is in editing mode
-    if (last_incr != 0 && (System::GetNow() - last_incr) < 1000) {
+    if (last_incr != 0 && (now - last_incr) < 1000) {
         if (shift) {
             satVal = 0.f;
             envVal = pr_level_sm;
@@ -294,8 +331,14 @@ int main(void)
                 initialized = true;
             }
         } else {
-            hw.SetLed(DaisyLegio::LED_LEFT, 0.f, envVal, 0.f);
-            hw.SetLed(DaisyLegio::LED_RIGHT, satVal, 0.f, 0.f);
+            // indicate current pitch CV destination
+            if (System::GetNow() - last_dck < 1000) {
+                hw.SetLed(DaisyLegio::LED_LEFT, 0.f, 0.f, pitchcvdest == PitchCVDest::LEVEL ? 1.f : 0.f);
+                hw.SetLed(DaisyLegio::LED_RIGHT, 0.f, 0.f, pitchcvdest == PitchCVDest::GAIN ? 1.f : 0.f);
+            } else {
+                hw.SetLed(DaisyLegio::LED_LEFT, 0.f, envVal, 0.f);
+                hw.SetLed(DaisyLegio::LED_RIGHT, satVal, 0.f, 0.f);
+            }
             hw.UpdateLeds();
             // save settings
             if (dosave) {

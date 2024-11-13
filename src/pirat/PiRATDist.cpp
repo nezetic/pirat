@@ -120,9 +120,6 @@ void PiRATDist::Process(
     Filter.Process(outputL, outputR, outputL, outputR, len);
     Hipass3.Process(outputL, outputR, outputL, outputR, len);
 
-    const float gainOut = Utils::ExpResponse(p_level_);
-    Utils::Gain(outputL, outputR, gainOut, outputL, outputR, len);
-
 #if HAS_FADER_SUPPORT
     MixerDryWet.Process(inputL, inputR, outputL, outputR, outputL, outputR, len);
 #endif
@@ -130,5 +127,8 @@ void PiRATDist::Process(
     if (p_bypass_ > 0.5f) {
         Utils::Copy(inputL, inputR, outputL, outputR, len);
     }
+
+    const float gainOut = Utils::ExpResponse(p_level_);
+    Utils::Gain(outputL, outputR, gainOut, outputL, outputR, len);
 }
 
